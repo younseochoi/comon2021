@@ -52,7 +52,6 @@ public class BoardDto {
                 .createdDate(createdDate)
                 .modifiedDate(modifiedDate)
                 .readCount(readCount)
-                .categoryId(categoryId)
                 .build();
     }
 }

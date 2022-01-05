@@ -1,6 +1,7 @@
 package com.cokung.comon.domain.entity;
 
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -38,7 +39,9 @@ public class Board {
     @Column
     private Long readCount;
 
-    @Column
-    private Long categoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    @NotNull
+    private Category category;
 
 }

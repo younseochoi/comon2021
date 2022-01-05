@@ -38,7 +38,7 @@ public class BoardService {
                     .createdDate(board.getCreatedDate())
                     .modifiedDate(board.getModifiedDate())
                     .readCount(board.getReadCount())
-                    .categoryId(board.getCategoryId())
+//                    .categoryId(board.getCategoryId())
                     .build();
         } else {
             // 없으면 null 반환
