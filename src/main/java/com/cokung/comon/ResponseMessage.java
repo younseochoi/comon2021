@@ -1,4 +1,4 @@
-package com.example.comon;
+package com.cokung.comon;
 
 public class ResponseMessage {
     public static final String POST_SUCCESS = "게시글 업로드 성공";

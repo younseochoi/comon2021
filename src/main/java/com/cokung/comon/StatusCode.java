@@ -1,4 +1,4 @@
-package com.example.comon;
+package com.cokung.comon;
 
 public class StatusCode {
     public static final int OK = 200;

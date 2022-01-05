@@ -1,6 +1,6 @@
-package com.example.comon.domain.entity;
+package com.cokung.comon.dto;
 
-import com.example.comon.dto.PostDto;
+import com.cokung.comon.domain.entity.Board;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -8,13 +8,14 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
-@ToString
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@ToString
 @Builder
-public class Post {
+public class BoardDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,4 +43,16 @@ public class Post {
     @Column
     private Long categoryId;
 
+    public Board toEntity() {
+        return Board.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .author(author)
+                .createdDate(createdDate)
+                .modifiedDate(modifiedDate)
+                .readCount(readCount)
+                .categoryId(categoryId)
+                .build();
+    }
 }

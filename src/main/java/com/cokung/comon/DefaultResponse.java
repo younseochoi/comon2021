@@ -1,4 +1,4 @@
-package com.example.comon;
+package com.cokung.comon;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
