@@ -43,5 +43,4 @@ public class Board {
     @JoinColumn(name = "category_id")
     @NotNull
     private Category category;
-
 }

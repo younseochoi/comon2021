@@ -33,11 +33,11 @@ public class CategoryBoardTest {
 
     @Test
     public void 게시글_만들기_테스트() {
-        Category category = categoryRepository.findById(10L).get();
+        Category category = categoryRepository.findById(12L).get();
         Board board = new Board().builder()
-                .title("카테고리 테스트")
-                .content("이거 테스트입니다.")
-                .author("도훈")
+                .title("카테고리 테스트 해보겠습니다.")
+                .content("이거 테스트입니다. 알겠습니까?")
+                .author("윤서")
                 .createdDate(LocalDateTime.now())
                 .category(category)
                 .build();
