@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/boards")
+@RequestMapping("https:comon2022.herokuapp.com/boards")
 public class BoardController {
     private BoardService boardService;
 

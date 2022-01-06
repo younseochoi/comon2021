@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class MainController {
-    @GetMapping("/")
+    @GetMapping("https:comon2022.herokuapp.com/")
     public String hello() {
         return "hello world";
     }
