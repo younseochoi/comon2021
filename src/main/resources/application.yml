@@ -3,7 +3,7 @@ spring:
     active: default
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://b874efd9292b51:df40558c@us-cdbr-east-05.cleardb.net/heroku_029d5e6c5aa26ee?reconnect=true
+    url: jdbc:mysql://us-cdbr-east-05.cleardb.net/heroku_029d5e6c5aa26ee?reconnect=true
     username: b874efd9292b51
     password: df40558c
 
