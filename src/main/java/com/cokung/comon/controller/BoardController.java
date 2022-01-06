@@ -38,7 +38,7 @@ public class BoardController {
     }
 
     @PostMapping
-    public ResponseEntity insertBoard(@RequestBody BoardDto boardDto) {
+    public ResponseEntity insertBoard(@RequestBody BoardDto boardDto, @RequestParam() Long category) {
         Long id = boardService.insertBoard(boardDto);
         return new ResponseEntity(DefaultResponse.res(StatusCode.CREATED, ResponseMessage.POST_SUCCESS, id), HttpStatus.CREATED);
     }
