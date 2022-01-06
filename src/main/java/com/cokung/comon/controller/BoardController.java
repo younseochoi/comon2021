@@ -32,7 +32,8 @@ public class BoardController {
             BoardDto boardDto = boardService.findById(id); // TODO: 2022/01/05 findById로 Board 찾고 category아이디 같은지 검사하는 코드 Service에 추가해야함.
             return new ResponseEntity(DefaultResponse.res(StatusCode.OK, ResponseMessage.READ_POST, boardDto), HttpStatus.OK);
         }else {
-            return new ResponseEntity(DefaultResponse.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
+            List<Board> boardDtos = boardService.findAll();
+            return new ResponseEntity(DefaultResponse.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_BOARD, boardDtos), HttpStatus.NOT_FOUND);
         }
     }
 
