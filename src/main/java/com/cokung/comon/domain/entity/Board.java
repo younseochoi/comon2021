@@ -39,7 +39,7 @@ public class Board {
     @Column
     private Long readCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     @NotNull
     private Category category;
