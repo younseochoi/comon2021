@@ -15,12 +15,10 @@ import java.util.Optional;
 @Service
 public class BoardService {
     private BoardRepository boardRepository;
-    private CategoryRepository categoryRepository;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository, CategoryRepository categoryRepository) {
+    public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
-        this.categoryRepository = categoryRepository;
     }
 
     @Transactional
