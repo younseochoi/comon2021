@@ -52,8 +52,6 @@ public class BoardService {
 
     @Transactional
     public Long insertBoard(BoardDto boardDto) {
-        Category category = categoryRepository.findById(boardDto.getCategoryId().getId()).get();
-        boardDto.setCategoryId(category);
         return boardRepository.save(boardDto.toEntity()).getId();
     }
 
