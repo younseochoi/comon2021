@@ -1,6 +1,7 @@
 package com.cokung.comon.dto;
 
 import com.cokung.comon.domain.entity.Board;
+import com.cokung.comon.domain.entity.Category;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -43,7 +44,7 @@ public class BoardDto {
     @Column
     private Long categoryId;
 
-    public Board toEntity() {
+    public Board toEntity(Category category) {
         return Board.builder()
                 .id(id)
                 .title(title)
@@ -52,6 +53,7 @@ public class BoardDto {
                 .createdDate(createdDate)
                 .modifiedDate(modifiedDate)
                 .readCount(readCount)
+                .category(category)
                 .build();
     }
 }

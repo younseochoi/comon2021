@@ -1,7 +1,9 @@
 package com.cokung.comon.service;
 
 import com.cokung.comon.domain.entity.Board;
+import com.cokung.comon.domain.entity.Category;
 import com.cokung.comon.domain.repository.BoardRepository;
+import com.cokung.comon.domain.repository.CategoryRepository;
 import com.cokung.comon.dto.BoardDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,12 @@ import java.util.Optional;
 @Service
 public class BoardService {
     private BoardRepository boardRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository) {
+    public BoardService(BoardRepository boardRepository, CategoryRepository categoryRepository) {
         this.boardRepository = boardRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Transactional
@@ -48,7 +52,12 @@ public class BoardService {
 
     @Transactional
     public Long insertBoard(BoardDto boardDto) {
-        return boardRepository.save(boardDto.toEntity()).getId();
+        Optional<Category> category = categoryRepository.findById(boardDto.getCategoryId());
+        if(category.isPresent()) {
+            return boardRepository.save(boardDto.toEntity(category.get())).getId();
+        } else {
+            return -1L;
+        }
     }
 
     @Transactional

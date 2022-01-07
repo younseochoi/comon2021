@@ -39,7 +39,11 @@ public class BoardController {
     @PostMapping
     public ResponseEntity insertBoard(@RequestBody BoardDto boardDto) {
         Long id = boardService.insertBoard(boardDto);
-        return new ResponseEntity(DefaultResponse.res(StatusCode.CREATED, ResponseMessage.POST_SUCCESS, id), HttpStatus.CREATED);
+        if(id != -1L) {
+            return new ResponseEntity(DefaultResponse.res(StatusCode.CREATED, ResponseMessage.POST_SUCCESS, id), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity(DefaultResponse.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_CATEGORY), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping
