@@ -26,11 +26,12 @@ public class BoardController {
     @GetMapping
     public ResponseEntity getBoard(@RequestParam(required = false) Long category, @RequestParam(required = false) Long id) {
         if(category != null && id == null) {
-            List<Board> boardDtos = boardService.findAll(); // TODO: 2022/01/05  findByCategory() 메소드 정의 해야 함. DTO 반환하게 해야 함.
+            List<Board> boardDtos = boardService.findByCategory(category); // TODO: 2022/01/05  findByCategory() 메소드 정의 해야 함. DTO 반환하게 해야 함.
             return new ResponseEntity(DefaultResponse.res(StatusCode.OK, ResponseMessage.READ_POST, boardDtos), HttpStatus.OK);
-        } else if(category != null && id != null) {
-            BoardDto boardDto = boardService.findById(id); // TODO: 2022/01/05 findById로 Board 찾고 category아이디 같은지 검사하는 코드 Service에 추가해야함.
-            return new ResponseEntity(DefaultResponse.res(StatusCode.OK, ResponseMessage.READ_POST, boardDto), HttpStatus.OK);
+        } else if(category!=null && id != null) { //특정 게시글 하나 보기
+                BoardDto boardDto = boardService.findById(id,category); // TODO: 2022/01/05 findById로 Board 찾고 category아이디 같은지 검사하는 코드 Service에 추가해야함.
+                return new ResponseEntity(DefaultResponse.res(StatusCode.OK, ResponseMessage.READ_POST, boardDto), HttpStatus.OK);
+
         }else {
             List<Board> boardDtos = boardService.findAll();
             return new ResponseEntity(DefaultResponse.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_BOARD, boardDtos), HttpStatus.NOT_FOUND);
@@ -40,7 +41,11 @@ public class BoardController {
     @PostMapping
     public ResponseEntity insertBoard(@RequestBody BoardDto boardDto) {
         Long id = boardService.insertBoard(boardDto);
-        return new ResponseEntity(DefaultResponse.res(StatusCode.CREATED, ResponseMessage.POST_SUCCESS, id), HttpStatus.CREATED);
+        if(id != -1L) {
+            return new ResponseEntity(DefaultResponse.res(StatusCode.CREATED, ResponseMessage.POST_SUCCESS, id), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity(DefaultResponse.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_CATEGORY), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping

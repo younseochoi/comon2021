@@ -27,8 +27,8 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDto findById(Long id) {
-        Optional<Board> postOptional = boardRepository.findById(id);
+    public BoardDto findById(Long id, Long category) {
+        Optional<Board> postOptional = boardRepository.findById(id, category);
         // 찾는 게시글이 있으면
         if(postOptional.isPresent()) {
             Board board = postOptional.get();
@@ -74,4 +74,10 @@ public class BoardService {
             return false;
         }
     }
+
+    @Transactional
+    public List<Board> findByCategory(Long category) {
+        return boardRepository.findByCategory(category);
+    }
+
 }
