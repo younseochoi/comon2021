@@ -1,0 +1,11 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "jpa.database-platform",
+      "type": "java.lang.String",
+      "description": "Description for jpa.database-platform."
+    }
+  ],
+  "hints": []
+}
