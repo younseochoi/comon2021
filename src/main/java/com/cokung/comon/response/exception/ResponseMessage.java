@@ -1,4 +1,4 @@
-package com.cokung.comon;
+package com.cokung.comon.response.exception;
 
 public class ResponseMessage {
     public static final String POST_SUCCESS = "게시글 업로드 성공";

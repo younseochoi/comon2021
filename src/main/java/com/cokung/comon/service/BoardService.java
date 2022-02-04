@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,13 +25,21 @@ public class BoardService {
     }
 
     @Transactional
-    public List<Board> findAll() {
-        return boardRepository.findAll();
+    public List<BoardDto> findAll() {
+        List<BoardDto> boardDtos = new ArrayList<>();
+        boardRepository.findAll().forEach(board -> boardDtos.add(new BoardDto().builder()
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .categoryId(board.getCategory().getCategoryId())
+                        .author(board.getAuthor())
+                        .build()
+                        ));
+        return boardDtos;
     }
 
     @Transactional
-    public BoardDto findById(Long id) {
-        Optional<Board> postOptional = boardRepository.findById(id);
+    public BoardDto findById(Long id, Long category) {
+        Optional<Board> postOptional = boardRepository.findById(id, category);
         // 찾는 게시글이 있으면
         if(postOptional.isPresent()) {
             Board board = postOptional.get();
@@ -51,10 +60,15 @@ public class BoardService {
     }
 
     @Transactional
+    public List<Board> findByCategory(Long category) {
+        return boardRepository.findByCategory(category);
+    }
+
+    @Transactional
     public Long insertBoard(BoardDto boardDto) {
         Optional<Category> category = categoryRepository.findById(boardDto.getCategoryId());
         if(category.isPresent()) {
-            return boardRepository.save(boardDto.toEntity(category.get())).getId();
+            return boardRepository.save(boardDto.toEntity(category.get())).getBoardId();
         } else {
             return -1L;
         }

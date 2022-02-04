@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @ToString
 @Builder
 public class BoardDto {
@@ -46,7 +45,7 @@ public class BoardDto {
 
     public Board toEntity(Category category) {
         return Board.builder()
-                .id(id)
+                .boardId(id)
                 .title(title)
                 .content(content)
                 .author(author)

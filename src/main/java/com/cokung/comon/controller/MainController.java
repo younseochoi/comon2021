@@ -1,13 +1,21 @@
 package com.cokung.comon.controller;
 
+import com.cokung.comon.dto.MemberDto;
+import com.cokung.comon.service.AuthServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class MainController {
     @GetMapping("/")
-    public String hello() {
-        return "hello world";
+    public String index() {
+        return "index";
     }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
 }

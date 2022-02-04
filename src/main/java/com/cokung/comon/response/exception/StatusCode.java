@@ -1,4 +1,4 @@
-package com.cokung.comon;
+package com.cokung.comon.response.exception;
 
 public class StatusCode {
     public static final int OK = 200;

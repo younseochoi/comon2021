@@ -16,8 +16,9 @@ import java.time.LocalDateTime;
 @Builder
 public class Board {
     @Id
+    @Column(name = "board_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long boardId;
 
     @Column(length = 100, nullable = false)
     private String title;
@@ -39,7 +40,7 @@ public class Board {
     @Column
     private Long readCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     @NotNull
     private Category category;
