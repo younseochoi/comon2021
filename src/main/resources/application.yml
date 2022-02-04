@@ -1,0 +1,40 @@
+spring:
+  profiles:
+    active: default
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/comon?autoReconnect=true
+    username: dohun
+    password: qorehgns31@
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show_sql: true
+    generate-ddl: true
+    hibernate:
+      format_sql: true
+      ddl-auto: create
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dohun3182@gmail.com
+    password: qorehgns31
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+jwt:
+  secret: privatekeyprivatekeyprivatekeyprivatek
+server:
+  error:
+    include-exception: false      # Response 에 Exception 을 표시할지
+    include-message: always       # Response 에 Exception Message 를 표시할지 (never | always | on_param)
+    include-stacktrace: on_param  # Response 에 Stack Trace 를 표시할지 (never | always | on_param) on_trace_params 은 deprecated
+    whitelabel.enabled: true

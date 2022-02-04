@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "jpa.database-platform",
+      "type": "java.lang.String",
+      "description": "Description for jpa.database-platform."
+    },
+    {
+      "name": "jpa.show-sql",
+      "type": "java.lang.String",
+      "description": "Description for jpa.show-sql."
+    },
+    {
+      "name": "jpa.properties.hibernate.ddl-auto",
+      "type": "java.lang.String",
+      "description": "Description for jpa.properties.hibernate.ddl-auto."
+    },
+    {
+      "name": "spring.jpa.hibernate.format_sql",
+      "type": "java.lang.String",
+      "description": "Description for spring.jpa.hibernate.format_sql."
+    }
+  ] }
