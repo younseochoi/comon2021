@@ -43,8 +43,7 @@ public class JwtUtil {
     public String generateAccessToken(String id) {
         Claims claims = Jwts.claims().setSubject(ACCESS_TOKEN_NAME);
         claims.put("id", id);
-        String accessToken = doGenerateToken(claims, ACCESS_TOKEN_VALIDATION_SECOND);
-        return accessToken;
+        return doGenerateToken(claims, ACCESS_TOKEN_VALIDATION_SECOND);
     }
 
     public String generateRefreshToken(String id) {
@@ -54,6 +53,13 @@ public class JwtUtil {
         redisUtil.setData(refreshToken, id);
         return refreshToken;
     }
+
+    public String generateVerificationToken(String id) {
+        Claims claims = Jwts.claims().setSubject("메일 인증 토큰");
+        claims.put("id", id);
+        return doGenerateToken(claims, 60 * 5L);
+    }
+
 
     public String doGenerateToken(Claims claims, Long expireTime) {
         Date now = new Date();

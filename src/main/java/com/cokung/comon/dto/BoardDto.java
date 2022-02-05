@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class BoardDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long boardId;
 
     @Column(length = 100, nullable = false)
     private String title;
@@ -45,7 +45,7 @@ public class BoardDto {
 
     public Board toEntity(Category category) {
         return Board.builder()
-                .boardId(id)
+                .boardId(boardId)
                 .title(title)
                 .content(content)
                 .author(author)
