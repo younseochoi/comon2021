@@ -30,6 +30,9 @@ spring:
           timeout: 5000
           writetimeout: 5000
     link: http://localhost:8080/users/verification/
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 jwt:
   secret: privatekeyprivatekeyprivatekeyprivatek
