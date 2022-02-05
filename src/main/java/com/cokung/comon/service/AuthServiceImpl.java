@@ -7,8 +7,10 @@ import com.cokung.comon.response.exception.CustomException;
 import com.cokung.comon.response.exception.ErrorCode;
 import com.cokung.comon.utils.JwtUtil;
 import com.cokung.comon.utils.RedisUtil;
+import io.lettuce.core.RedisCommandExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,10 @@ public class AuthServiceImpl implements AuthService{
     private final EmailService emailService;
     private final JwtUtil jwtUtil;
 
+
+    @Value("${spring.mail.link}")
+    private String VERIFICATION_LINK;
+
     @Autowired
     public AuthServiceImpl(MemberRepository memberRepository, PasswordEncoder passwordEncoder, RedisUtil redisUtil, EmailService emailService, JwtUtil jwtUtil) {
         this.memberRepository = memberRepository;
@@ -35,45 +41,50 @@ public class AuthServiceImpl implements AuthService{
         this.jwtUtil = jwtUtil;
     }
 
-    @Override
-    public void signUpUser(MemberDto memberDto) {
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
-    }
 
     @Override
-    public MemberDto loginUser(String id, String password) {
-        MemberDto memberDto = memberRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)).toDto();
+    public String signUpUser(MemberDto memberDto) {
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        return memberRepository.save(memberDto.toEntity()).toDto().getId();
+    }
+
+
+    @Override
+    public MemberDto signInUser(String id, String password) {
+        MemberDto memberDto = memberRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)).toDto();
         if(!passwordEncoder.matches(password, memberDto.getPassword())) throw new CustomException(ErrorCode.MISMATCH_PASSWORD);
         return memberDto;
     }
 
-    @Override
-    public void sendVerificationMail(MemberDto memberDto, String key){
-        String VERIFICATION_LINK = "http://localhost:8080/user/verify/" + key;
-        if(memberDto == null) throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
-        UUID uuid = UUID.randomUUID();
-        redisUtil.setDataExpire(uuid.toString(), memberDto.getId(), 60 * 30L);
-        emailService.sendMail(memberDto.getEmail(), "회원가입 인증 메일입니다.", VERIFICATION_LINK);
-    }
 
     @Override
-    public void verifyEmail(String key){
-        String memberId = redisUtil.getData(key);
-        MemberDto memberDto = memberRepository.findById(memberId)
+    public void sendVerificationMail(String requestId){
+        String verificationToken = jwtUtil.generateVerificationToken(requestId);
+        MemberDto memberDto = memberRepository.findById(requestId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)).toDto();
-        modifyUserRole(memberDto, UserRole.USER);
+        redisUtil.setDataExpire(verificationToken, requestId, 60L);
+        emailService.sendMail(memberDto.getEmail(), "회원가입 인증 메일입니다. \n", VERIFICATION_LINK + verificationToken);
     }
+
+
+    @Override
+    public String verifyEmail(String verificationToken) {
+        String targetMemberId = redisUtil.getData(verificationToken);
+        if(targetMemberId == null) throw new CustomException(ErrorCode.VERIFICATION_EMAIL_NOT_FOUND);
+        return modifyUserRole(targetMemberId, UserRole.USER);
+    }
+
 
     @Override
     @Transactional
-    public void modifyUserRole(MemberDto memberDto, UserRole userRole) {
+    public String modifyUserRole(String memberId, UserRole userRole) {
+        MemberDto memberDto = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)).toDto();
         memberDto.setRole(userRole);
-        memberDto.setMemberId(memberRepository.findById(memberDto.getId()).get().getMemberId());
-        System.out.println("업데이트----");
-        System.out.println(memberDto.toString());
-        memberRepository.save(memberDto.toEntity());
+        return memberRepository.save(memberDto.toEntity()).toDto().getId();
     }
+
 
     @Override
     public MemberDto findById(String id) {
@@ -89,5 +100,11 @@ public class AuthServiceImpl implements AuthService{
         tokens.put(JwtUtil.ACCESS_TOKEN_NAME, jwtUtil.generateAccessToken(memberDto.getId()));
         tokens.put(JwtUtil.REFRESH_TOKEN_NAME, jwtUtil.generateRefreshToken(memberDto.getId()));
         return tokens;
+    }
+
+
+    @Override
+    public boolean confirmIdDuplication(String id) {
+        return memberRepository.findById(id).isPresent();
     }
 }

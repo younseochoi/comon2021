@@ -1,5 +1,6 @@
 package com.cokung.comon.domain.entity;
 
+import com.cokung.comon.dto.BoardDto;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
@@ -44,4 +45,17 @@ public class Board {
     @JoinColumn(name = "category_id")
     @NotNull
     private Category category;
+
+    public BoardDto toDto() {
+        return BoardDto.builder()
+                .boardId(boardId)
+                .title(title)
+                .content(content)
+                .author(author)
+                .createdDate(createdDate)
+                .modifiedDate(modifiedDate)
+                .readCount(readCount)
+                .categoryId(category.getCategoryId())
+                .build();
+    }
 }

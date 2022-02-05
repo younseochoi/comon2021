@@ -3,116 +3,65 @@ package com.cokung.comon.controller;
 import com.cokung.comon.dto.LoginMemberDto;
 import com.cokung.comon.dto.MemberDto;
 import com.cokung.comon.dto.RequestVerifyEmail;
-import com.cokung.comon.response.exception.DefaultResponse;
-import com.cokung.comon.response.exception.ResponseMessage;
-import com.cokung.comon.response.exception.StatusCode;
+import com.cokung.comon.dto.VerificationMemberDto;
 import com.cokung.comon.response.success.SuccessCode;
 import com.cokung.comon.response.success.SuccessResponse;
 import com.cokung.comon.service.AuthService;
-import com.cokung.comon.utils.CookieUtil;
-import com.cokung.comon.utils.JwtUtil;
-import com.cokung.comon.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 @Slf4j
 public class MemberController {
     private final AuthService authService;
-    private final JwtUtil jwtUtil;
-    private final CookieUtil cookieUtil;
-    private final RedisUtil redisUtil;
 
     @Autowired
-    public MemberController(AuthService authService, JwtUtil jwtUtil, CookieUtil cookieUtil, RedisUtil redisUtil) {
+    public MemberController(AuthService authService) {
         this.authService = authService;
-        this.jwtUtil = jwtUtil;
-        this.cookieUtil = cookieUtil;
-        this.redisUtil = redisUtil;
+    }
+
+    @PostMapping("confirmation")
+    public ResponseEntity confirmIdDuplication(@RequestBody VerificationMemberDto verificationMemberDto) {
+        log.info(verificationMemberDto.toString());
+        if(authService.confirmIdDuplication(verificationMemberDto.getId())) {
+            return SuccessResponse.toResponseEntity(SuccessCode.USER_CONFIRM_FAIL);
+        } else {
+            return SuccessResponse.toResponseEntity(SuccessCode.USER_CONFIRM_SUCCESS, verificationMemberDto.getId());
+        }
     }
 
 
-    @GetMapping
-    public String hello() {
-        return "hello";
+    @PostMapping("sign-up")
+    public ResponseEntity signUpUser(@RequestBody MemberDto memberDto) {
+        return SuccessResponse.toResponseEntity(SuccessCode.USER_CREATED, authService.signUpUser(memberDto));
     }
 
 
-    @GetMapping("signUp")
-    public String signUpUser() {
-        return "signUp";
-    }
-
-
-    @PostMapping("/signUp")
-    public ResponseEntity signUpUser(MemberDto memberDto) throws Exception {
-        System.out.println(memberDto.toString());
-        authService.signUpUser(memberDto);
-        return SuccessResponse.toResponseEntity(SuccessCode.CREATED_USER, memberDto);
-    }
-
-
-    @GetMapping("/login")
-    public String login() {
-        System.out.println("login page");
-        return "login";
-    }
-
-
-    @PostMapping("/login")
-    public ResponseEntity login(LoginMemberDto loginMemberDto, HttpServletRequest req, HttpServletResponse res) throws Exception {
-        final MemberDto memberDto = authService.loginUser(loginMemberDto.getId(), loginMemberDto.getPassword());
+    @PostMapping("sign-in")
+    public ResponseEntity signInUser(@RequestBody LoginMemberDto loginMemberDto) {
+        log.info(loginMemberDto.toString());
+        final MemberDto memberDto = authService.signInUser(loginMemberDto.getId(), loginMemberDto.getPassword());
         Map<String, String> tokens = authService.generateAccessTokenAndRefreshToken(memberDto);
-        return SuccessResponse.toResponseEntity(SuccessCode.LOGIN_SUCCESS, tokens);
+        return SuccessResponse.toResponseEntity(SuccessCode.USER_LOGIN_SUCCESS, tokens);
     }
 
 
-    @GetMapping("/verify")
-    public String verify(HttpServletRequest req) {
-        Cookie[] cookieList = req.getCookies();
-        for(Cookie cookie: cookieList) {
-            System.out.println(cookie.getValue());
-        }
-        return "verify";
+    @PostMapping("verification")
+    public ResponseEntity verifyUser(@RequestBody RequestVerifyEmail requestVerifyEmail) {
+        log.info("requestVerifyEmail: :::  " + requestVerifyEmail.getId());
+        authService.sendVerificationMail(requestVerifyEmail.getId());
+        return SuccessResponse.toResponseEntity(SuccessCode.SEND_VERIFICATION_MAIL_SUCCESS);
     }
 
 
-    @PostMapping("/verify")
-    public ResponseEntity verify(RequestVerifyEmail requestVerifyEmail, HttpServletRequest req, HttpServletResponse res) {
-        try {
-            Cookie[] cookieList = req.getCookies();
-            String key = cookieUtil.getCookie(req, JwtUtil.REFRESH_TOKEN_NAME).getValue();
-            System.out.println("controller: requestverifyemail: " + requestVerifyEmail.getId());
-            MemberDto memberDto = authService.findById(requestVerifyEmail.getId());
-            System.out.println(memberDto.toString());
-            authService.sendVerificationMail(memberDto, key);
-            return new ResponseEntity(DefaultResponse.res(StatusCode.OK, ResponseMessage.READ_POST), HttpStatus.OK);
-        }
-        catch (Exception e) {
-            System.out.println("error");
-            return new ResponseEntity(DefaultResponse.res(StatusCode.NOT_FOUND, ResponseMessage.READ_POST), HttpStatus.NOT_FOUND);
-        }
-    }
-
-
-    @GetMapping("/verify/{key}")
+    @GetMapping("verification/{key}")
     public ResponseEntity getVerify(@PathVariable String key) {
-        try {
-            authService.verifyEmail(key);
-            return new ResponseEntity(DefaultResponse.res(StatusCode.OK, ResponseMessage.READ_POST), HttpStatus.OK);
-        }
-        catch (Exception e) {
-            return new ResponseEntity(DefaultResponse.res(StatusCode.NOT_FOUND, ResponseMessage.READ_POST), HttpStatus.NOT_FOUND);
-        }
+    return SuccessResponse.toResponseEntity(SuccessCode.VERIFICATION_MAIL_SUCCESS, authService.verifyEmail(key));
     }
 }

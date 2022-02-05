@@ -10,8 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
+    List<Board> findAll();
+
     @Query(value = "SELECT * FROM board WHERE category_id = ?",nativeQuery = true)
-    List<Board> findByCategory(Long category);
+    Optional<List<Board>> findByCategory(Long category);
 
     @Query(value = "SELECT * FROM board WHERE board_id = ? and category_id = ?",nativeQuery = true)
     Optional<Board> findById(Long id, Long category);
