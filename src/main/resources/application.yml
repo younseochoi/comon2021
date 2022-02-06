@@ -30,6 +30,9 @@ spring:
           timeout: 5000
           writetimeout: 5000
     link: http://localhost:8080/users/verification/
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 jwt:
   secret: privatekeyprivatekeyprivatekeyprivatek
@@ -40,3 +43,8 @@ server:
     include-message: always       # Response 에 Exception Message 를 표시할지 (never | always | on_param)
     include-stacktrace: on_param  # Response 에 Stack Trace 를 표시할지 (never | always | on_param) on_trace_params 은 deprecated
     whitelabel.enabled: true
+  port: 8080
+
+java:
+  runtime:
+    version:
