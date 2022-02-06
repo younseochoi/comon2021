@@ -1,0 +1,33 @@
+.Login {
+  text-align: center;
+  padding-top: 100px;
+}
+.Login_text {
+  font-size: 34px;
+}
+.Login_form {
+  padding-top: 30px;
+}
+.login_input {
+  width: 300px;
+  height: 40px;
+  padding-left: 10px;
+  margin: 10px;
+}
+.login_submit {
+  font-size: 15px;
+  width: 80px;
+  height: 30px;
+  background: #167854;
+  border-style: none;
+  margin-top: 30px;
+  color: #ffffff;
+}
+.go_Register {
+  text-align: center;
+  margin-top: 20px;
+  border-style: none;
+  text-decoration: underline;
+  color: #167854;
+  background: #ffffff;
+}
