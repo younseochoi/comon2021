@@ -1,0 +1,10 @@
+.mainNavbar {
+  padding-top: 50px;
+}
+.mainNavbar_login {
+  float: right;
+  font-size: 50px;
+  padding-right: 50px;
+  border-style: none;
+  background: #ffffff;
+}

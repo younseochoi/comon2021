@@ -1,0 +1,9 @@
+export { default as Main } from "./Main/Main";
+export { default as Home } from "./Home/Home";
+export { default as Write } from "./Write/Write";
+export { default as Navbar } from "./Navbar/Navbar";
+export { default as Lists } from "./Lists/Lists";
+export { default as Post } from "./Post/Post";
+export { default as MainNavbar } from "./MainNavbar/MainNavbar";
+export { default as Register } from "./Register/Register";
+export { default as Login } from "./Login/Login";

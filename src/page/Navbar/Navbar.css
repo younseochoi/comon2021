@@ -1,0 +1,18 @@
+.navbar {
+  padding-top: 50px;
+}
+.navbar_name {
+  font-size: 50px;
+  padding-left: 50px;
+}
+.navbar_comment {
+  font-size: 30px;
+  padding-left: 50px;
+}
+.navbar_login {
+  float: right;
+  font-size: 50px;
+  padding-right: 50px;
+  border-style: none;
+  background: #ffffff;
+}

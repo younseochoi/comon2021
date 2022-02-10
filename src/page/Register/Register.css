@@ -1,0 +1,26 @@
+.Register {
+  text-align: center;
+  padding-top: 30px;
+}
+.Register_text {
+  font-size: 34px;
+}
+.Register_form {
+  padding-top: 30px;
+}
+.register_input {
+  width: 300px;
+  height: 40px;
+  padding-left: 10px;
+  margin: 10px;
+}
+.register_submit {
+  font-size: 15px;
+  width: 80px;
+  height: 30px;
+  background: #167854;
+  border-style: none;
+  margin-top: 30px;
+  color: #ffffff;
+  margin-bottom: 50px;
+}
