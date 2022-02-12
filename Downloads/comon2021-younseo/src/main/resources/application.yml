@@ -1,0 +1,38 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: yoonkun001@gmail.com
+    password: fkausajrrhtlvek.
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  profiles:
+    active: default
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://us-cdbr-east-05.cleardb.net/heroku_029d5e6c5aa26ee?reconnect=true
+    username: b874efd9292b51
+    password: df40558c
+
+jpa:
+  database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  open-in-view: false
+  show-sql: true
+  hibernate:
+    format_sql: true
+    ddl-auto: create
+
+server:
+  port: 8080
+  servlet:
+    session:
+      tracking-modes: COOKIE
+
+jwt:
+  secret: C0DA2F1C08FCF502F64DC11A4F7A28134F5EE6B2A45318279F557CD32B4A59FA
+
+
