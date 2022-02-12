@@ -4,6 +4,8 @@ import com.cokung.comon.domain.entity.Member;
 import com.cokung.comon.domain.entity.MemberRole;
 import com.cokung.comon.domain.repository.MemberRepository;
 import com.cokung.comon.dto.MemberDto;
+import com.cokung.comon.response.exception.CustomException;
+import com.cokung.comon.response.exception.ErrorCode;
 import com.cokung.comon.util.EmailServicelmpl;
 import com.cokung.comon.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +39,16 @@ public class MailAuthService {
         }
     }
 
+
     public void verifyEmail(String key){
         try{
             System.out.println("여기는 mailAuthService "+key);
             String userId =redisUtil.getData(key); //여기 알 수 없는 공백이 한가득 들어가서 trim()으로 공백제거
             System.out.println(userId.trim());
-            Member member = memberRepository.findById(userId.trim());
-            System.out.println(member);
-            MemberDto memberDto = new MemberDto(member);
-            if(member == null) throw new ChangeSetPersister.NotFoundException();
+            MemberDto memberDto = memberRepository.findById(userId.trim())
+                            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)).toDto();
+
+            if(memberDto == null) throw new ChangeSetPersister.NotFoundException();
             modifyMemberRole(memberDto, MemberRole.ROLE_USER);
             redisUtil.deleteData(key);
         }catch (Exception e){

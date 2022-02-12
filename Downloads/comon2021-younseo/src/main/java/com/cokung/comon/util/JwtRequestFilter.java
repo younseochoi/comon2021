@@ -80,7 +80,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                     MemberDto memberDto = new MemberDto();
                     memberDto.setId(refreshUname);
-                    String newToken =jwtUtil.generateToken(memberDto); //새로운 access token 발금
+                    String newToken =jwtUtil.generateAccessToken(memberDto.getId()); //새로운 access token 발금
                     System.out.println("newToken"+newToken);
                     Cookie newAccessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME,newToken);
                     response.addCookie(newAccessToken);
@@ -89,7 +89,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }catch(ExpiredJwtException e){
 
         }
-
         filterChain.doFilter(request,response);
     }
 }

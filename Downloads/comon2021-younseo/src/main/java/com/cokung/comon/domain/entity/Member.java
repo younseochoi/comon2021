@@ -1,9 +1,12 @@
 package com.cokung.comon.domain.entity;
 
+import com.cokung.comon.dto.MemberDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -15,10 +18,9 @@ import java.util.Date;
 @Builder
 public class Member {
 
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long member_id;
+    private Long memberId;
 
     @Column(length = 10,nullable = false,unique = true)
     private String id;
@@ -32,10 +34,13 @@ public class Member {
     @Column(length = 15,nullable = false)
     private String name; //이름
 
-    @Column(length = 20, nullable = false)
-    private String dept; //학부
+    @Column(length = 25,nullable = false)
+    private String college; //단과대
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 30, nullable = false)
+    private String department; //학부
+
+    @Column(length = 30, nullable = false)
     private String major; //학과
 
     @Column(length = 9, nullable = false)
@@ -46,12 +51,28 @@ public class Member {
     private MemberRole role;
 
     @Column(nullable = false)
-    private String birth;
+    private String birthDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date joinDate; //가입 날짜
 
+    public MemberDto toDto() {
+        return MemberDto.builder()
+                .memberId(memberId)
+                .id(id)
+                .password(password)
+                .email(email)
+                .birthDate(birthDate)
+                .name(name)
+                .joinDate(joinDate)
+                .role(role)
+                .college(college)
+                .department(department)
+                .major(major)
+                .studentId(studentId)
+                .build();
+    }
 
 
 }

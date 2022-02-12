@@ -1,8 +1,8 @@
 package com.cokung.comon.controller;
 
-import com.cokung.comon.DefaultResponse;
-import com.cokung.comon.ResponseMessage;
-import com.cokung.comon.StatusCode;
+import com.cokung.comon.response.exception.DefaultResponse;
+import com.cokung.comon.response.exception.ResponseMessage;
+import com.cokung.comon.response.exception.StatusCode;
 import com.cokung.comon.domain.entity.Board;
 import com.cokung.comon.dto.BoardDto;
 import com.cokung.comon.service.BoardService;

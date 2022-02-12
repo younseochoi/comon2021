@@ -15,6 +15,7 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
+
     public final static long TOKEN_VALIDATION_SECOND = 1000L * 60 *10 ; // 유효시간 10분
     public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 24 * 2; //유효시간 2일
 
@@ -57,13 +58,13 @@ public class JwtUtil {
     }
 
     // 토큰 생성 -> doGenerateToken
-    public String generateToken(MemberDto memberdto) {
-        return doGenerateToken(memberdto.getId(), TOKEN_VALIDATION_SECOND);
+    public String generateAccessToken(String id) {
+        return doGenerateToken(id, TOKEN_VALIDATION_SECOND);
     }
 
     // refresh token 생성
-    public String generateRefreshToken(MemberDto member) {
-        return doGenerateToken(member.getId(), REFRESH_TOKEN_VALIDATION_SECOND);
+    public String generateRefreshToken(String id) {
+        return doGenerateToken(id, REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
     // access token 생성

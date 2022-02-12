@@ -1,4 +1,4 @@
-package com.cokung.comon;
+package com.cokung.comon.response.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

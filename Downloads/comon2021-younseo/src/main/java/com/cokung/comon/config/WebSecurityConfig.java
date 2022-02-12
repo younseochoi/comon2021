@@ -1,5 +1,6 @@
 package com.cokung.comon.config;
 
+import com.cokung.comon.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,5 +22,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .formLogin().disable()
                 .headers().frameOptions().disable();
+
+        http.logout().logoutUrl("/user/logout")
+                .deleteCookies(JwtUtil.ACCESS_TOKEN_NAME)
+                .deleteCookies(JwtUtil.REFRESH_TOKEN_NAME)
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true);
     }
 }

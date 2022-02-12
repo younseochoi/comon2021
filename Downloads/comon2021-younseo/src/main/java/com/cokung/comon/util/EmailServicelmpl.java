@@ -18,4 +18,5 @@ public class EmailServicelmpl {
         message.setText(text);
         emailSender.send(message);
     }
+
 }
